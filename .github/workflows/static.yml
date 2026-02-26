@@ -14,7 +14,7 @@ jobs:
 
       - name: Replace StaticForms API key
         env:
-          STATIC_FORMS_KEY: ${{ secrets.STATIC_FORMS_KEY }}
+          STATIC_FORMS_KEY: ${{ secrets.STATICFORMS_API_KEY }}
         run: |
           # Replace placeholder in all HTML files
           find . -type f -name "*.html" -exec sed -i "s|<STATIC_FORMS_KEY>|$STATIC_FORMS_KEY|g" {} \;
