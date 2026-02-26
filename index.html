@@ -20,6 +20,42 @@
   .scale {
       margin-left: 20px;
   }
+  form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+  label {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  input, textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  button {
+    background: #fe5b5b;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #f03636;
+  }
+  .hidden {
+    display: none;
+  }
+
   </style>
 </head>
 <body>
@@ -85,13 +121,18 @@
   <form action="https://api.staticforms.dev/submit" method="POST">
     <!-- Your API Key (replace with your actual key) -->
     <input type="hidden" name="apiKey" value="">
+    <input type="checkbox" name="honeypot" class="hidden">
     
     <!-- Form fields -->
-    <label for="instructions">I have read the instructions: </label>
-    <input type="checkbox" name="instructions" required />
+    <div>
+      <label for="instructions">I have read the instructions: </label>
+      <input type="checkbox" name="instructions" required />
+    </div>
     
-    <label for="ack">I agree for my responses to be used for research purposes: </label>
-    <input type="checkbox" name="ack" required />
+    <div>
+      <label for="ack">I agree for my responses to be used for research purposes: </label>
+      <input type="checkbox" name="ack" required />
+    </div>
     
     <button type="submit">Submit</button>
   </form>
