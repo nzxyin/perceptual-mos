@@ -25,7 +25,6 @@
 <body>
   <h1>Naturalness MOS Test</h1>
   <h2>Participant Instructions</h2>
-
     <p>Thank you for participating in this listening study.</p>
 
     <p>
@@ -46,14 +45,6 @@
         <li>Does the rhythm and intonation sound natural?</li>
         <li>Does the speech flow smoothly?</li>
         <li>Are there any robotic, metallic, distorted, or artificial qualities?</li>
-    </ul>
-
-    <p>Please focus only on <strong>how natural the speech sounds</strong>, not:</p>
-    <ul>
-        <li>Whether you like the voice</li>
-        <li>Whether the content is interesting</li>
-        <li>Whether the speaker sounds attractive</li>
-        <li>Whether the message is intelligible (unless unnaturalness affects it)</li>
     </ul>
 
     <h3>Rating Scale</h3>
@@ -89,6 +80,21 @@
     </p>
 
     <p><strong>Thank you for your participation.</strong></p>
+
+  <h2>MOS Test</h2>
+  <form action="https://api.staticforms.dev/submit" method="POST">
+    <!-- Your API Key (replace with your actual key) -->
+    <input type="hidden" name="apiKey" value="">
+    
+    <!-- Form fields -->
+    <label for="instructions">I have read the instructions: </label>
+    <input type="checkbox" name="instructions" required />
+    
+    <label for="ack">I agree for my responses to be used for research purposes: </label>
+    <input type="checkbox" name="ack" required />
+    
+    <button type="submit">Submit</button>
+  </form>
 
 </body>
 </html>
