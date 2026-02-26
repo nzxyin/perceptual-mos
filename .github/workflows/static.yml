@@ -1,0 +1,26 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Replace StaticForms API key
+        env:
+          STATIC_FORMS_KEY: ${{ secrets.STATIC_FORMS_KEY }}
+        run: |
+          # Replace placeholder in all HTML files
+          find . -type f -name "*.html" -exec sed -i "s|<STATIC_FORMS_KEY>|$STATIC_FORMS_KEY|g" {} \;
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .   # change to ./dist if you use a build folder
