@@ -83,71 +83,6 @@
     margin-bottom: 5px;
   }   
   </style>
-  <script>
-    
-    // ===== 1. DEFINE YOUR MODELS & TEXTS =====
-    
-    const models = ["art-tts", "art-tts-align", "art-tts-prosody", "gt", "sparc-resynth", "your-tts"];
-    const texts = ["1089_134691_000014_000001", "5639_40744_000030_000003", "8455_210777_000076_000000", "8463_294825_000023_000002"];
-    
-    // ===== 2. GENERATE ALL 24 COMBINATIONS =====
-    
-    let samples = [];
-    
-    models.forEach(model => {
-      texts.forEach(text => {
-        samples.push({
-          id: model + "_" + text, // unique ID
-          model: model,
-          text: text,
-          file: `/content/${model}_${text}.wav`
-        });
-      });
-    });
-    
-    // ===== 3. SHUFFLE FUNCTION =====
-    
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-    
-    samples = shuffle(samples);
-    
-    // ===== 4. RENDER INTO FORM =====
-    
-    const container = document.getElementById("mos-container");
-    
-    samples.forEach((sample, index) => {
-    
-      const row = document.createElement("div");
-      row.className = "mos-row";
-    
-      row.innerHTML = `
-        <audio controls>
-          <source src="${sample.file}" type="audio/wav">
-          Your browser does not support the audio element.
-        </audio>
-    
-        <div class="radio-group">
-          ${[1,2,3,4,5].map(score => `
-            <label class="radio-label">
-              <input type="radio" name="mos_${index}" value="${score}" required>
-              ${score}
-            </label>
-          `).join("")}
-        </div>
-    
-        <input type="hidden" name="sample_id_${index}" value="${sample.id}">
-      `;
-    
-      container.appendChild(row);
-    });
-    
-    </script>
 </head>
 <body>
   <h1>Naturalness MOS Test</h1>
@@ -237,4 +172,69 @@
   </form>
 
 </body>
+<script>
+    
+    // ===== 1. DEFINE YOUR MODELS & TEXTS =====
+    
+    const models = ["art-tts", "art-tts-align", "art-tts-prosody", "gt", "sparc-resynth", "your-tts"];
+    const texts = ["1089_134691_000014_000001", "5639_40744_000030_000003", "8455_210777_000076_000000", "8463_294825_000023_000002"];
+    
+    // ===== 2. GENERATE ALL 24 COMBINATIONS =====
+    
+    let samples = [];
+    
+    models.forEach(model => {
+      texts.forEach(text => {
+        samples.push({
+          id: model + "_" + text, // unique ID
+          model: model,
+          text: text,
+          file: `/content/${model}_${text}.wav`
+        });
+      });
+    });
+    
+    // ===== 3. SHUFFLE FUNCTION =====
+    
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    samples = shuffle(samples);
+    
+    // ===== 4. RENDER INTO FORM =====
+    
+    const container = document.getElementById("mos-container");
+    
+    samples.forEach((sample, index) => {
+    
+      const row = document.createElement("div");
+      row.className = "mos-row";
+    
+      row.innerHTML = `
+        <audio controls>
+          <source src="${sample.file}" type="audio/wav">
+          Your browser does not support the audio element.
+        </audio>
+    
+        <div class="radio-group">
+          ${[1,2,3,4,5].map(score => `
+            <label class="radio-label">
+              <input type="radio" name="mos_${index}" value="${score}" required>
+              ${score}
+            </label>
+          `).join("")}
+        </div>
+    
+        <input type="hidden" name="sample_id_${index}" value="${sample.id}">
+      `;
+    
+      container.appendChild(row);
+    });
+    
+</script>
 </html>
