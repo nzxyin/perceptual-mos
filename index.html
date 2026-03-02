@@ -173,54 +173,58 @@
 
 </body>
 <script>
-    
-    // ===== 1. DEFINE YOUR MODELS & TEXTS =====
-    
-    const models = ["art-tts", "art-tts-align", "art-tts-prosody", "gt", "sparc-resynth", "your-tts"];
-    const texts = ["1089_134691_000014_000001", "5639_40744_000030_000003", "8455_210777_000076_000000", "8463_294825_000023_000002"];
-    
-    // ===== 2. GENERATE ALL 24 COMBINATIONS =====
-    
-    let samples = [];
-    
-    models.forEach(model => {
-      texts.forEach(text => {
-        samples.push({
-          id: model + "_" + text, // unique ID
-          model: model,
-          text: text,
-          file: `content/${model}_${text}.wav`
-        });
-      });
-    });
-    
-    // ===== 3. SHUFFLE FUNCTION =====
-    
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-    
-    samples = shuffle(samples);
-    
-    // ===== 4. RENDER INTO FORM =====
-    
+
+// ===== 1. AVAILABLE SETS =====
+
+const availableSets = [
+  "mos_eval_set_0",
+  "mos_eval_set_1",
+  "mos_eval_set_2",
+  "mos_eval_set_3",
+  "mos_eval_set_4",
+  "mos_eval_set_5"
+];
+
+// ===== 2. RANDOMLY CHOOSE ONE SET =====
+
+function randomChoice(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+const chosenSet = randomChoice(availableSets);
+
+// ===== 3. SHUFFLE FUNCTION =====
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// ===== 4. LOAD MANIFEST + RENDER =====
+
+fetch(`content/${chosenSet}/manifest.json`)
+  .then(response => response.json())
+  .then(files => {
+
+    // Shuffle files
+    files = shuffle(files);
+
     const container = document.getElementById("mos-container");
-    
-    samples.forEach((sample, index) => {
-    
+
+    files.forEach((filename, index) => {
+
       const row = document.createElement("div");
       row.className = "mos-row";
-    
+
       row.innerHTML = `
         <audio controls>
-          <source src="${sample.file}" type="audio/wav">
+          <source src="content/${chosenSet}/${filename}" type="audio/wav">
           Your browser does not support the audio element.
         </audio>
-    
+
         <div class="radio-group">
           ${[1,2,3,4,5].map(score => `
             <label class="radio-label">
@@ -229,12 +233,24 @@
             </label>
           `).join("")}
         </div>
-    
-        <input type="hidden" name="sample_id_${index}" value="${sample.id}">
+
+        <input type="hidden" name="sample_id_${index}" value="${chosenSet}_${filename}">
       `;
-    
+
       container.appendChild(row);
     });
-    
+
+    // Store which set was used
+    const setInput = document.createElement("input");
+    setInput.type = "hidden";
+    setInput.name = "chosen_set";
+    setInput.value = chosenSet;
+    document.querySelector("form").appendChild(setInput);
+
+  })
+  .catch(error => {
+    console.error("Error loading manifest:", error);
+  });
+
 </script>
 </html>
